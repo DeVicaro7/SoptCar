@@ -1,7 +1,6 @@
 import datetime as dt
 from flask import Flask, render_template, flash, request, redirect, url_for
 import mysql
-import mysql.connector
 
 #BEM VINDO!#
 #Estacionamento SOPTCAR#
@@ -97,7 +96,12 @@ def calculo_cpf(cpf): #Realiza cálculos para verificador dos últimos 2 dígito
     return aprovar
                
 def calcular_hora(data_entrada, data_saida): #SAVEPOINT: Função para calcular a diferença de tempos e retornar minutos.
-    return data_saida - data_entrada
+    data_calculo = 0 #Iniciar Calculo de minutos a partir de 0.
+    if (data_saida.hour - data_entrada.hour) > 1:
+        calcular_minutos = ((data_saida.hour - data_entrada.hour)*60) + abs(data_calculo - data_entrada.minute) #Problemas ao calcular minutos pois é possível adentrar às 7:45 e sair 8:10 e comprarmos + de 60 minutos.
+    else:
+        calcular_minutos = data_saida.minute - data_entrada.minute
+    return calcular_minutos
 
 #Script:
 while (True):

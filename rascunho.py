@@ -1,2 +1,6 @@
-list = [1*2,2*3,5*4,4*8,8,8,1,0]
-print(sum(list[0:5]))
+import datetime as dt
+
+datahora = dt.datetime.now().minute
+dataminuto = dt.datetime.now().minute
+
+print(dt.datetime.
