@@ -16,7 +16,7 @@ class Database: #Classe vinculada ao banco de dados MySQL
         connect.commit()
         print("Carro registrado com sucesso!")
         
-    def output(data_saida): #Conecta ao banco de dados car_registro e insere registros na tabela car_out.
+    def output(data_saida, placa_saida): #Conecta ao banco de dados car_registro e insere registros na tabela car_out.
         connect = mysql.connector.connect(
             host="Stopcar_db",
             root="root",
@@ -45,7 +45,7 @@ class Database: #Classe vinculada ao banco de dados MySQL
             consulta = f"SELECT * FROM '{banco}' WHERE plc_veiculo = '{veiculo}' OR cpf_dono_veiculo = '{cpf_dono}';"
             cursor.execute(consulta)
             table = cursor.fetchall()
-        print(pd.DataFrame(table))
+        return pd.DataFrame(table)
 class Configures: #Classe para serviços
     def calculo_cpf(cpf): #Realiza o calculo para verificação dos dígitos do CPF.
         digitos = [int(cpf[0]*10),int(cpf[1]*9),int(cpf[2]*8),int(cpf[3]*7),int(cpf[4]*6),int(cpf[5]*5),int(cpf[6]*4),int(cpf[7]*3),int(cpf[8]*2)] #Lista para facilitar a soma dos dados

@@ -1,6 +1,6 @@
 import datetime as dt
-from flask import Flask, render_template, flash, request, redirect, url_for
 import classes as cl
+import pandas as pd
 
 #BEM VINDO!#
 #Estacionamento SOPTCAR#
@@ -29,11 +29,18 @@ while (True):
         
         for contador2 in range(3): #Laço para disponibilizar até 3 tentativas para o usuário cadastrar o cpf.
             cpf = input(f"Digite o CPF do dono do veículo {placa}: ")
-
-            if len(cpf) != 11 and not cpf.isdigit():
-                print("CPF INVÁLIDO, TENTE NOVAMENTE!")
-            elif contador2 == 3:
-                print("CPF INVÁLIDO, FIM DAS TENTATIVAS.")
+            if cl.Configures.calculo_cpf(cpf) == False: #Caso o método calculo_cpf retornar Falso, o usuário terá mais 3 tentativas.
+                if contador2 < 3:
+                    cpf = ""
+                    print(f"CPF INVÁLIDO!!\nTentativas restantes: {contador2}")
+                else:
+                    cpf = ""
+                    print("Excesso de tentativas, por favor tente novamente mais tarde!")
+            else:
                 break
-        data_entrada = dt.datetime.now()
+            
+        data_entrada = dt.datetime.now() #Registrando em variável, a data de entrada.
+        cl.Database.input(placa, cpf, data_entrada) #Criando um registro no banco de dados.
     elif opcao == 2: #SAVEPOINT: elif opcao == 2: #2- Registrar Saída do veículo (output) com preços.
+        data_saida = dt.datetime.now()
+        cl.Database.output(data_saida)
